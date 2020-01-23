@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
 
 const API =
-  "https://webservicessec.procaps.com.co/api/CumpleMes?mes=02&pais=COLOMBIA";
-const baseURL = "https://webservicessec.procaps.com.co/api/CumpleMes?";
+  "https://webservicessec.procaps.com.co/api/CumpleMes?mes=01&pais=COLOMBIA";
+const baseURL = "https://webservicessec.procaps.com.co/api/";
 
 class App extends Component {
   constructor(props) {
@@ -10,11 +10,13 @@ class App extends Component {
     this.state = {
       cumple: [],
       value: "01",
-      allCumple: [],
-      search: "",
+      busquedaCumple: [],
+      busqueda: "",
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleSearchInput = this.handleSearchInput.bind(this);
   }
 
   handleChange(event) {
@@ -23,35 +25,50 @@ class App extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    fetch(`${baseURL}mes=${this.state.value}&pais=COLOMBIA`)
+    fetch(`${baseURL}CumpleMes?mes=${this.state.value}&pais=COLOMBIA`)
       .then(response => response.json())
       .then(data => this.setState({ cumple: data }));
+    const tableBirdthday = document.getElementById("tablaMes");
+    if (tableBirdthday.style.display === "none") {
+      tableBirdthday.style.display = "table";
+    }
+  }
+
+  handleSearchInput(event) {
+    this.setState({ busqueda: event.target.value });
+  }
+
+  handleSearch(event) {
+    event.preventDefault();
+    fetch(`${baseURL}CumpleNombre?nombre=${this.state.busqueda}&pais=COLOMBIA`)
+      .then(response => response.json())
+      .then(data => this.setState({ busquedaCumple: data }));
+    const tableBirdthday = document.getElementById("tablaMes");
+    if (tableBirdthday.style.display !== "none") {
+      tableBirdthday.style.display = "none";
+    }
+    document.getElementById("inputSearch").value = "";
   }
 
   componentDidMount() {
     fetch(API)
       .then(response => response.json())
       .then(data => this.setState({ cumple: data }));
-
-    for (let i = 1; i <= 12; i++) {
-      fetch(`${baseURL}mes=${i}&pais=COLOMBIA`)
-        .then(response => response.json())
-        .then(data => this.state.allCumple.push(data));
-    }
   }
 
   render() {
     //let filterEmployee = this.props.cumple;
     const { cumple } = this.state;
+    const { busquedaCumple } = this.state;
     return (
       <Fragment>
         <div className="container-fluid sticky-top bg-light">
           <div className="container">
             <div className="row pb-5 pt-4">
-              <div className="col">
-                <h2>Consulta de Cumpleaños por Mes</h2>
+              <div className="col-4">
+                <h2>Consulta de Cumpleaños por mes</h2>
               </div>
-              <div className="col">
+              <div className="col-3">
                 <form onSubmit={this.handleSubmit}>
                   <div className="form-group">
                     <label>
@@ -81,12 +98,34 @@ class App extends Component {
                   </button>
                 </form>
               </div>
+              <div className="col-5">
+                <form onSubmit={this.handleSearch}>
+                  <div className="form-group">
+                    <label for="exampleFormControlTextarea1">
+                      Buscar por Nombre o Apellido
+                    </label>
+                    <br />
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="inputSearch"
+                      placeholder="Escriba aqui..."
+                      onChange={this.handleSearchInput}
+                      required
+                    />
+                    <br />
+                    <button type="submit" className="btn btn-danger">
+                      Buscar por Nombre
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
         <div className="container pt-5">
           <div className="table-responsive">
-            <table className="table">
+            <table className="table" id="tablaMes">
               <thead>
                 <tr>
                   <th>Nombre Completo</th>
@@ -98,8 +137,32 @@ class App extends Component {
               <tbody>
                 {cumple.map((user, index) => {
                   return (
-                    <tr key={user.id}>
+                    <tr key={index}>
                       <td>{user.Nombre}</td>
+                      <td>{user.Dia}</td>
+                      <td>{user.Departamento}</td>
+                      <td>{user.Sede}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <table className="table" id="tablaConsulta">
+              <thead>
+                <tr>
+                  <th>Nombre Completo</th>
+                  <th>Mes</th>
+                  <th>Día</th>
+                  <th>Área</th>
+                  <th>Sede</th>
+                </tr>
+              </thead>
+              <tbody>
+                {busquedaCumple.map((user, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{user.Nombre}</td>
+                      <td>{user.Mes}</td>
                       <td>{user.Dia}</td>
                       <td>{user.Departamento}</td>
                       <td>{user.Sede}</td>
