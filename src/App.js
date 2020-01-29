@@ -62,13 +62,15 @@ class App extends Component {
     const { busquedaCumple } = this.state;
     return (
       <Fragment>
-        <div className="container-fluid sticky-top bg-light">
+        <div className="container-fluid sticky-top background">
           <div className="container">
-            <div className="row pb-5 pt-4">
-              <div className="col-4">
+            <div className="row">
+              <div className="col pt-5">
                 <h2>Consulta de Cumpleaños por mes</h2>
               </div>
-              <div className="col-3">
+            </div>
+            <div className="row pb-5 pt-4">
+              <div className="col-6">
                 <form onSubmit={this.handleSubmit}>
                   <div className="form-group">
                     <label>
@@ -98,7 +100,7 @@ class App extends Component {
                   </button>
                 </form>
               </div>
-              <div className="col-5">
+              <div className="col-6">
                 <form onSubmit={this.handleSearch}>
                   <div className="form-group">
                     <label for="exampleFormControlTextarea1">

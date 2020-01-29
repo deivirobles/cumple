@@ -15,3 +15,9 @@ code {
 #tablaMes {
   display: table;
 }
+
+.background {
+  background-color: #ceeae9;
+  background-image: url("./globos.png");
+  background-size: cover;
+}
