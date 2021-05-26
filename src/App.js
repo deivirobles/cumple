@@ -1,8 +1,11 @@
 import React, { Component, Fragment } from "react";
 
-const API =
-  "https://webservicessec.procaps.com.co/api/CumpleMes?mes=01&pais=COLOMBIA";
-const baseURL = "https://webservicessec.procaps.com.co/api/";
+//const API = "https://webservicessec.procaps.com.co/api/CumpleMes?mes=01&pais=COLOMBIA" -- ANTIGUA;
+//CAMBIO 2021/05/26
+const API = "https://webservicessec.procaps.com.co:8007/api/CumpleMes?mes=01&pais=COLOMBIA"
+//const baseURL = "https://webservicessec.procaps.com.co/api/" -- ANTIGUA;
+//CAMBIO 2021/05/26
+const baseURL = "https://webservicessec.procaps.com.co:8007/api/";
 
 class App extends Component {
   constructor(props) {
@@ -18,6 +21,7 @@ class App extends Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSearchInput = this.handleSearchInput.bind(this);
   }
+
 
   handleChange(event) {
     this.setState({ value: event.target.value });
